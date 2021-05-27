@@ -13,11 +13,11 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
 CREATE TABLE IF NOT EXISTS songplays 
 (songplay_id serial PRIMARY KEY, 
-start_time timestamp, 
-user_id int REFERENCES users(user_id), 
+start_time timestamp,
+user_id int, 
 level text, 
-song_id text REFERENCES songs(song_id),
-artist_id text REFERENCES artists(artist_id), 
+song_id text,
+artist_id text, 
 session_id int, 
 location text, 
 user_agent text);
@@ -58,7 +58,7 @@ day int,
 week int, 
 month int, 
 year int, 
-weekday text);
+weekday int);
 """)
 
 # INSERT RECORDS

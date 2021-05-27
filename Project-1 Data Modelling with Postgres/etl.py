@@ -27,14 +27,19 @@ def process_log_file(cur, filepath):
     df = df[df["page"]=="NextSong"]
         
     # convert timestamp column to datetime
-    t = pd.to_datetime(df['ts'], unit="ms")
+    t = pd.to_datetime(df['ts'])
 
-#     print("t = \n", t)
     # insert time data records
-    time_data = [t, t.dt.hour, t.dt.day, t.dt.week, t.dt.month, t.dt.year, t.dt.dayofweek]
+    
+    time_data = list()
+    
+    for record in t:
+        time_data.append([record, record.hour, record.day, record.week, \
+                          record.month, record.year, record.dayofweek])
+    
     column_labels = ["timestamp", "hour", "day", "week_of_year", "month", "year", "weekday"]
-    time_dict = {column_labels[i]: time_data[i] for i in range(len(column_labels))}
-    time_df = pd.DataFrame(time_dict, index=[0])
+
+    time_df = pd.DataFrame.from_records(time_data, columns=column_labels)
 
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
@@ -67,7 +72,6 @@ def process_log_file(cur, filepath):
 
         cur.execute(songplay_table_insert, songplay_data)
 
-
 def process_data(cur, conn, filepath, func):
     # get all files matching extension from directory
     all_files = []
@@ -99,3 +103,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+    
+    
+    
+
