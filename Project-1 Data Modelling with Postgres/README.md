@@ -18,9 +18,14 @@ The database model is a Star Schema consisting of 4 dimension tables: `users`, `
 
 There are multiple decision rationale involved in choosing this datamodel which can be jsutified as follows:
 
-|Decision | Reasoning |
+|Decision |  |
 |Choice of SQL over NoSQL | The data is structured in the form of JSON files and hence it is fixed.  |
 
+
+| Decision Made  |  Reasoning behind |
+|----------------|-------------------|
+| Choice of SQL over NoSQL | The data is structured in the form of JSON files and hence it is fixed. <br>The data size is moderate size and huge. <br>The data can be joined and analyzed using the relational database and joins|
+| Choice of Star Schema  |  Multiple tables are involved in the join <br>Efficient to have a fact table with the required metrics and foreign keys from other tables |
 
 # State and justify your database schema design and ETL pipeline.
 
