@@ -1,18 +1,10 @@
-<!-- To get query which was executed -->
+# Introduction
+Sparkify is a Mobile App for Streaming music. It is a startup company which aims to improve it's user retention and cater to the needs and preferences of the user. The company wants to analyze the user and song log data which is collected using their mobile application. The analytics team is particularly interested in understanding what songs their users are listening to. Currently, their data resides in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app. 
 
-<!-- #     sql = cur.mogrify(song_select, (row.song, row.artist, row.length)) -->
-<!-- #     print("sql = ", sql) -->
+# Project Description
+This project provides a means of making use of the JSON data by creating a database schema in the PostgreSQL Database and ETL pipeline for migrating the data from JSON files to RDBMS. The Postgres database is designed to optimize queries on song play analysis. 
 
-
-# Discuss the purpose of this database in the context of the startup, Sparkify, and their analytical goals.
-
-## Introduction
-Sparkify is a Mobile App for Streaming music. It is a startup company and hence would like to plan their strategies and promotions to maximize user retention and reduce churn rate. The company wants to analyze the user and song log data being collected using their mobile application. The analytics team is particularly interested in understanding what songs their users are listening to. Currently, their data resides in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app. 
-
-## Project Description
-This project consists of a database schema for the PostgreSQL Database and ETL pipeline for migrating the data from JSON files to RDBMS. The Postgres database is designed to optimize queries on song play analysis. 
-
-# State and justify your database schema design and ETL pipeline.
+# DataBase Schema
 
 The database model is a Star Schema consisting of 4 dimension tables: `users`, `songs`, `artists` and `time`, built using the song_data and the log_data and one fact table, `songplays` built using the 4 dimension tables. 
 
@@ -27,7 +19,7 @@ There are multiple decision rationale involved in choosing this datamodel which 
 Schema for Song Play Analysis
 The project includes the following tables.
 
-### Fact Table
+## Fact Table
 
 `songplays` - records in log data associated with song plays i.e. records with page NextSong
 
@@ -35,7 +27,7 @@ The project includes the following tables.
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |     
 
 
-### Dimension Tables
+## Dimension Tables
 
 `users` - users in the app
 
@@ -57,7 +49,30 @@ The project includes the following tables.
 | start_time | hour | day | week | month | year | weekday |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | 
 
-Running of the project:
+
+# Description of the files in this Project
+
+`test.ipynb` 
+Contains queries to view the first few rows of each table in the database.
+Also, it contains Analytical and Data Integrity Check queries
+
+`create_tables.py` 
+Contains script to delete existing tables and create new tables in the database. 
+It can be used to reset the tables before running the ETL scripts.
+
+`etl.ipynb` 
+Reads and processes a single file from song_data and log_data and loads the data into the tables. 
+
+`etl.py` 
+Reads and processes files from song_data and log_data and loads them into the Database tables. 
+
+`sql_queries.py` 
+Contains all the sql queries required in this Project
+
+`README.md` 
+Contains documentation and information about the Project
+
+# Running of the project:
 
 Step 1: Create the Database and the tables
 Run the Following command in the terminal
@@ -77,9 +92,11 @@ Also, if you want to view the data in individual tables or test the Data Integri
 
 After using any of these notebooks, make sure to `Restart Kernel` so that the connection to the database is released. 
 
-NOTE: You will not be able to run `test.ipynb`, `etl.ipynb`, or `etl.py` until you have run `create_tables.py` at least once to create the sparkifydb database, which these other files connect to.
+NOTE: 
 
-[Optional] Provide example queries and results for song play analysis.
+1. You will not be able to run `test.ipynb`, `etl.ipynb`, or `etl.py` until you have run `create_tables.py` at least once to create the sparkifydb database, which these other files connect to.
+
+2. You can check out some of the Analytical queries and Data Integrity queries in the `test.ipynb` Jupyter Notebook
 
 
 
