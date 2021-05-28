@@ -11,7 +11,6 @@ def process_song_file(cur, filepath):
     Extract the data from the song JSON files, transform the data as per requirement and load the corresponding data in the songs and artists tables
     '''
     
-    
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -36,13 +35,13 @@ def process_log_file(cur, filepath):
     df = df[df["page"]=="NextSong"]
         
     # convert timestamp column to datetime
-    t = pd.to_datetime(df['ts'])
+    ts_df = pd.to_datetime(df['ts'])
 
     # insert time data records
     
     time_data = list()
     
-    for record in t:
+    for record in ts_df:
         time_data.append([record, record.hour, record.day, record.week, \
                           record.month, record.year, record.dayofweek])
     
