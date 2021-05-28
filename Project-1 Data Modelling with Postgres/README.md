@@ -57,41 +57,30 @@ The project includes the following tables.
 | start_time | hour | day | week | month | year | weekday |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | 
 
-Project Template
-To get started with the project, go to the workspace on the next page, where you'll find the project template files. You can work on your project and submit your work through this workspace. Alternatively, you can download the project template files from the Resources folder if you'd like to develop your project locally.
+Running of the project:
 
-In addition to the data files, the project workspace includes six files:
+Step 1: Create the Database and the tables
+Run the Following command in the terminal
 
-test.ipynb displays the first few rows of each table to let you check your database.
-create_tables.py drops and creates your tables. You run this file to reset your tables before each time you run your ETL scripts.
-etl.ipynb reads and processes a single file from song_data and log_data and loads the data into your tables. This notebook contains detailed instructions on the ETL process for each of the tables.
-etl.py reads and processes files from song_data and log_data and loads them into your tables. You can fill this out based on your work in the ETL notebook.
-sql_queries.py contains all your sql queries, and is imported into the last three files above.
-README.md provides discussion on your project.
-Project Steps
-Below are steps you can follow to complete the project:
+`
+python create_tables.py
+`
 
-Create Tables
-Write CREATE statements in sql_queries.py to create each table.
-Write DROP statements in sql_queries.py to drop each table if it exists.
-Run create_tables.py to create your database and tables.
-Run test.ipynb to confirm the creation of your tables with the correct columns. Make sure to click "Restart kernel" to close the connection to the database after running this notebook.
-Build ETL Processes
-Follow instructions in the etl.ipynb notebook to develop ETL processes for each table. At the end of each table section, or at the end of the notebook, run test.ipynb to confirm that records were successfully inserted into each table. Remember to rerun create_tables.py to reset your tables before each time you run this notebook.
+Step 2: Run the ETL pipeline to load the data from JSON to Postgres Database
 
-Build ETL Pipeline
-Use what you've completed in etl.ipynb to complete etl.py, where you'll process the entire datasets. Remember to run create_tables.py before running etl.py to reset your tables. Run test.ipynb to confirm your records were successfully inserted into each table.
+`
+python etl.py
+`
 
-Document Process
-Do the following steps in your README.md file.
+Optionally, After Step 1, you can view the ETL process in detail for extracting, transforming and loading one JSON file by using `Restart and Run All Cells` options in the `etl.ipynb` Jupyter Notebook
+Also, if you want to view the data in individual tables or test the Data Integrity of the songplays dataset, you can `Restart and Run All Cells` in the `test.ipynb` Jupyter Notebook
 
-Discuss the purpose of this database in the context of the startup, Sparkify, and their analytical goals.
-State and justify your database schema design and ETL pipeline.
-[Optional] Provide example queries and results for song play analysis.
-Here's a guide on Markdown Syntax.
+After using any of these notebooks, make sure to `Restart Kernel` so that the connection to the database is released. 
 
-NOTE: You will not be able to run test.ipynb, etl.ipynb, or etl.py until you have run create_tables.py at least once to create the sparkifydb database, which these other files connect to.
-
+NOTE: You will not be able to run `test.ipynb`, `etl.ipynb`, or `etl.py` until you have run `create_tables.py` at least once to create the sparkifydb database, which these other files connect to.
 
 [Optional] Provide example queries and results for song play analysis.
+
+
+
 
