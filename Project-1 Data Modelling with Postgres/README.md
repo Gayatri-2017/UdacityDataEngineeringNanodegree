@@ -18,32 +18,45 @@ The database model is a Star Schema consisting of 4 dimension tables: `users`, `
 
 There are multiple decision rationale involved in choosing this datamodel which can be jsutified as follows:
 
-|Decision |  |
-|Choice of SQL over NoSQL | The data is structured in the form of JSON files and hence it is fixed.  |
-
-
 | Decision Made  |  Reasoning behind |
 |----------------|-------------------|
 | Choice of SQL over NoSQL | The data is structured in the form of JSON files and hence it is fixed. <br>The data size is moderate size and huge. <br>The data can be joined and analyzed using the relational database and joins|
 | Choice of Star Schema  |  Multiple tables are involved in the join <br>Efficient to have a fact table with the required metrics and foreign keys from other tables |
 
-# State and justify your database schema design and ETL pipeline.
 
 Schema for Song Play Analysis
-Using the song and log datasets, you'll need to create a star schema optimized for queries on song play analysis. This includes the following tables.
+The project includes the following tables.
 
-Fact Table
-songplays - records in log data associated with song plays i.e. records with page NextSong
-songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
-Dimension Tables
-users - users in the app
-user_id, first_name, last_name, gender, level
-songs - songs in music database
-song_id, title, artist_id, year, duration
-artists - artists in music database
-artist_id, name, location, latitude, longitude
-time - timestamps of records in songplays broken down into specific units
-start_time, hour, day, week, month, year, weekday
+### Fact Table
+
+`songplays` - records in log data associated with song plays i.e. records with page NextSong
+
+| songplay_id | start_time | user_id | level | song_id | artist_id | session_id | location | user_agent |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |     
+
+
+### Dimension Tables
+
+`users` - users in the app
+
+| user_id | first_name | last_name | gender | level |
+| ---- | ---- | ---- | ---- | ---- |
+
+`songs` - songs in music database
+
+| song_id | title | artist_id | year | duration |
+| ---- | ---- | ---- | ---- | ---- |
+
+`artists` - artists in music database
+
+| artist_id | name | location | latitude | longitude |
+| ---- | ---- | ---- | ---- | ---- |
+
+`time` - timestamps of records in songplays broken down into specific units
+
+| start_time | hour | day | week | month | year | weekday |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | 
+
 Project Template
 To get started with the project, go to the workspace on the next page, where you'll find the project template files. You can work on your project and submit your work through this workspace. Alternatively, you can download the project template files from the Resources folder if you'd like to develop your project locally.
 
