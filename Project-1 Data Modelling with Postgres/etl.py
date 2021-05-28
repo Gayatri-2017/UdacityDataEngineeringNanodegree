@@ -7,6 +7,11 @@ import json
 
 
 def process_song_file(cur, filepath):
+    '''
+    Extract the data from the song JSON files, transform the data as per requirement and load the corresponding data in the songs and artists tables
+    '''
+    
+    
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -20,6 +25,10 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    '''
+    Extract the data from the log JSON files, transform the data as per requirement and load the corresponding data in the time, users and songplays tables
+    '''
+    
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -73,6 +82,10 @@ def process_log_file(cur, filepath):
         cur.execute(songplay_table_insert, songplay_data)
 
 def process_data(cur, conn, filepath, func):
+    '''
+    Create a list of all json files in the filepath, process each file and populate the corresponding data in the tables.
+    '''
+    
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -92,6 +105,10 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    '''
+    Connect to the database and perform ETL on song_data and log_data
+    '''
+    
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 

@@ -26,17 +26,17 @@ user_agent text);
 user_table_create = ("""
 CREATE TABLE IF NOT EXISTS users
 (user_id int PRIMARY KEY, 
-first_name text, 
-last_name text, 
-gender text, 
+first_name text NOT NULL, 
+last_name text NOT NULL, 
+gender text,
 level text);
 """)
 
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS songs 
 (song_id text PRIMARY KEY, 
-title text, 
-artist_id text, 
+title text NOT NULL, 
+artist_id text NOT NULL, 
 year int, 
 duration decimal);
 """)
@@ -44,7 +44,7 @@ duration decimal);
 artist_table_create = ("""
 CREATE TABLE IF NOT EXISTS artists 
 (artist_id text PRIMARY KEY, 
-name text, 
+name text NOT NULL, 
 location text, 
 latitude decimal, 
 longitude decimal);
@@ -73,7 +73,7 @@ user_table_insert = ("""
 INSERT INTO users 
 (user_id, first_name, last_name, gender, level) 
 VALUES (%s, %s, %s, %s, %s)
-ON CONFLICT (user_ID) DO NOTHING
+ON CONFLICT (user_ID) DO UPDATE SET level = EXCLUDED.level
 """)
 
 song_table_insert = ("""
