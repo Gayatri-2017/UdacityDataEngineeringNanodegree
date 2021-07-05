@@ -65,16 +65,12 @@ These tables are used to load the data directly from S3 buckets to table, withou
 
 # Description of the files in this Project
 
-`test.ipynb` 
-Contains queries to view the first few rows of each table in the database.
-Also, it contains Analytical and Data Integrity Check queries
+`dwh.cfg`
+Contains configuration details for connecting to Redshift cluster. 
 
 `create_tables.py` 
 Contains script to delete existing tables and create new tables in the database. 
 It can be used to reset the tables before running the ETL scripts.
-
-`etl.ipynb` 
-Reads and processes a single file from song_data and log_data and loads the data into the tables. 
 
 `etl.py` 
 Reads and processes files from song_data and log_data and loads them into the Database tables. 
@@ -86,6 +82,8 @@ Contains all the sql queries required in this Project
 Contains documentation and information about the Project
 
 # Running of the project:
+
+Step 0: Start the Redshift cluster and enter the credentials in `dwh.cfg` configuration
 
 Step 1: Create the Database and the tables
 Run the Following command in the terminal
@@ -100,17 +98,6 @@ Step 2: Run the ETL pipeline to load the data from JSON to Postgres Database
 python etl.py
 `
 
-Optionally, After Step 1, you can view the ETL process in detail for extracting, transforming and loading one JSON file by using `Restart and Run All Cells` options in the `etl.ipynb` Jupyter Notebook
-Also, if you want to view the data in individual tables or test the Data Integrity of the songplays dataset, you can `Restart and Run All Cells` in the `test.ipynb` Jupyter Notebook
-
-After using any of these notebooks, make sure to `Restart Kernel` so that the connection to the database is released. 
-
-NOTE: 
-
-1. You will not be able to run `test.ipynb`, `etl.ipynb`, or `etl.py` until you have run `create_tables.py` at least once to create the sparkifydb database, which these other files connect to.
-
-2. You can check out some of the Analytical queries and Data Integrity queries in the `test.ipynb` Jupyter Notebook
-
-
+# Some possible Analytical Queries:
 
 
