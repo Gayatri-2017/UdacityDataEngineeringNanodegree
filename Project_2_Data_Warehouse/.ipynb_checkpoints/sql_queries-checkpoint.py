@@ -74,27 +74,42 @@ DISTSTYLE KEY
 DISTKEY (start_time)
 """)
 
+'''
+Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
+I am adding an explicit NOT NULL condition to user_id instead of PRIMARY KEY constraint.
+'''
+
 user_table_create = ("""
 CREATE TABLE IF NOT EXISTS users
-(user_id int PRIMARY KEY, 
+(user_id int NOT NULL,
 first_name text NOT NULL, 
 last_name text NOT NULL, 
 gender text,
 level text);
 """)
 
+'''
+Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
+I am adding an explicit NOT NULL condition to song_id instead of PRIMARY KEY constraint.
+'''
+
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS songs 
-(song_id text PRIMARY KEY, 
+(song_id text NOT NULL, 
 title text NOT NULL, 
 artist_id text NOT NULL, 
 year int, 
 duration decimal);
 """)
 
+'''
+Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
+I am adding an explicit NOT NULL condition to artist_id instead of PRIMARY KEY constraint.
+'''
+
 artist_table_create = ("""
 CREATE TABLE IF NOT EXISTS artists 
-(artist_id text PRIMARY KEY, 
+(artist_id text NOT NULL, 
 name text NOT NULL, 
 location text, 
 latitude decimal, 
@@ -102,11 +117,13 @@ longitude decimal);
 """)
 
 '''
+Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
+I am adding an explicit NOT NULL condition to start_time instead of PRIMARY KEY constraint.
 Since, time_table wouldn't be large, I am performing a ALL distribution on this table.
 '''
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS time 
-(start_time timestamp PRIMARY KEY, 
+(start_time timestamp NOT NULL, 
 hour int, 
 day int, 
 week int, 
