@@ -2,11 +2,10 @@
 Sparkify is a Mobile App for Streaming music. It is a startup company which aims to improve it's user retention and cater to the needs and preferences of the user. The company wants to analyze the user and song log data which is collected using their mobile application. The analytics team is particularly interested in understanding what songs their users are listening to. Currently, their data resides in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app. 
 
 # Project Description
-This project provides a means of making use of the JSON data by creating a database schema in the PostgreSQL Database and ETL pipeline for migrating the data from JSON files to RDBMS. The Postgres database is designed to optimize queries on song play analysis. 
+In this project, we load the data present in the S3 buckets, we perform a ELT pipeline of the data present in the form of JSON files in S3 bucket. We load the data in S3 buckets, directly to the staging tables in Redshift without any transformations. We then transformed the data from these two staging tables, to the analytical tables present in Redshift. The tables in Redshift are designed to optimize the queries on song play analysis. 
 
 # DataBase Schema
-
-The database model is a Star Schema consisting of 4 dimension tables: `users`, `songs`, `artists` and `time`, built using the song_data and the log_data and one fact table, `songplays` built using the 4 dimension tables. 
+The database model is a Star Schema consisting of 4 dimension tables: `users`, `songs`, `artists` and `time`, built using the `song_data` and the `log_data` and one fact table, `songplays` built using the 4 dimension tables. 
 
 There are multiple decision rationale involved in choosing this datamodel which can be jsutified as follows:
 
