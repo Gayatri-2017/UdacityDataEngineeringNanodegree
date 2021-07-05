@@ -99,6 +99,9 @@ python etl.py
 `
 
 # Some possible Analytical Queries:
+```
+Top 5 most preferred locations¶
+```
 
 ```
 query = """
