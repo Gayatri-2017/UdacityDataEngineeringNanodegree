@@ -55,17 +55,23 @@ year int
 );
 """)
 
+'''
+I am assumming, most of our analytical queries would be distributed across time_periods.
+So, I performed a distribution of start_time, so that similar time_periods reside on the same node.
+'''
 songplay_table_create = ("""
 CREATE TABLE IF NOT EXISTS songplays 
 (songplay_id INT IDENTITY(0,1) PRIMARY KEY, 
-start_time timestamp,
-user_id int, 
+start_time timestamp NOT NULL,
+user_id int NOT NULL, 
 level text, 
-song_id text,
-artist_id text, 
+song_id text NOT NULL,
+artist_id text NOT NULL, 
 session_id int, 
 location text, 
 user_agent text);
+DISTSTYLE KEY
+DISTKEY (start_time)
 """)
 
 user_table_create = ("""
@@ -95,6 +101,9 @@ latitude decimal,
 longitude decimal);
 """)
 
+'''
+Since, time_table wouldn't be large, I am performing a ALL distribution on this table.
+'''
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS time 
 (start_time timestamp PRIMARY KEY, 
@@ -104,6 +113,7 @@ week int,
 month int, 
 year int, 
 weekday int);
+DISTSTYLE ALL
 """)
 
 # STAGING TABLES Queries
@@ -126,7 +136,8 @@ region 'us-west-2';
 songplay_table_insert = ("""
 INSERT INTO songplays 
 (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
-SELECT DATE(se.ts),
+SELECT DISTINCT 
+DATE(se.ts),
 se.userId as user_id,
 se.level as level,
 ss.song_id,
@@ -145,7 +156,7 @@ AND se.page = 'NextSong'
 user_table_insert = ("""
 INSERT INTO users 
 (user_id, first_name, last_name, gender, level) 
-SELECT 
+SELECT DISTINCT
 se.userId as user_id,
 se.firstName as first_name,
 se.lastName as last_name,
@@ -158,7 +169,7 @@ WHERE se.page = 'NextSong'
 song_table_insert = ("""
 INSERT INTO songs 
 (song_id, title, artist_id, year, duration) 
-SELECT 
+SELECT DISTINCT
 song_id, 
 title, 
 artist_id, 
@@ -170,7 +181,7 @@ FROM staging_songs
 artist_table_insert = ("""
 INSERT INTO artists 
 (artist_id, name, location, latitude, longitude) 
-SELECT 
+SELECT DISTINCT
 artist_id, 
 artist_name as name, 
 artist_location as location, 
@@ -182,7 +193,7 @@ FROM staging_songs
 time_table_insert = ("""
 INSERT INTO time 
 (start_time, hour, day, week, month, year, weekday) 
-SELECT 
+SELECT DISTINCT
 se.ts as start_time,
 EXTRACT(hour from se.ts) as hour,
 EXTRACT(day from se.ts) as day,
