@@ -26,6 +26,19 @@ The project includes the following tables.
 | songplay_id | start_time | user_id | level | song_id | artist_id | session_id | location | user_agent |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |     
 
+## Staging Tables
+
+These tables are used to load the data directly from S3 buckets to table, without any transformations
+
+`staging_events` - To store data from Log data JSON files to staging_events table.
+
+| artist | auth | firstName |	gender | itemInSession | lastName |	length | level | location |	method | page |	registration |	sessionId |	song |	status |	ts |	userAgent |	userId |
+| ---- | ---- | ---- |	---- | ---- | ---- |	---- | ---- | ---- |	---- | ---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |
+
+`staging_songs` - To store data from Song data JSON files to staging_songs table.
+
+| num_songs |	artist_id |	artist_latitude |	artist_longitude |	artist_location |	artist_name |	song_id |	title |	duration |	year |
+| ---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |
 
 ## Dimension Tables
 
