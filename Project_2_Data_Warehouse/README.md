@@ -100,4 +100,15 @@ python etl.py
 
 # Some possible Analytical Queries:
 
+```
+query = """
+SELECT location, count(DISTINCT user_id) as user_count
+FROM songplays sp
+WHERE song_id is not null and artist_id is not null
+GROUP BY location
+ORDER BY count(DISTINCT user_id) DESC
+"""
 
+%sql $query
+
+```
