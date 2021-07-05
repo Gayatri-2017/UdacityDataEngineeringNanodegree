@@ -18,13 +18,6 @@ There are multiple decision rationale involved in choosing this datamodel which 
 Schema for Song Play Analysis
 The project includes the following tables.
 
-## Fact Table
-
-`songplays` - records in log data associated with song plays i.e. records with page NextSong
-
-| songplay_id | start_time | user_id | level | song_id | artist_id | session_id | location | user_agent |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |     
-
 ## Staging Tables
 
 These tables are used to load the data directly from S3 buckets to table, without any transformations
@@ -38,6 +31,14 @@ These tables are used to load the data directly from S3 buckets to table, withou
 
 | num_songs |	artist_id |	artist_latitude |	artist_longitude |	artist_location |	artist_name |	song_id |	title |	duration |	year |
 | ---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |
+
+## Fact Table
+
+`songplays` - records in log data associated with song plays i.e. records with page NextSong
+
+| songplay_id | start_time | user_id | level | song_id | artist_id | session_id | location | user_agent |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |     
+
 
 ## Dimension Tables
 
