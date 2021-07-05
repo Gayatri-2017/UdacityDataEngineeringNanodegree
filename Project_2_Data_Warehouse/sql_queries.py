@@ -1,7 +1,6 @@
 import configparser
 
-
-# CONFIG
+# initializing the CONFIG parameters
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 ARN = config.get("IAM_ROLE","ARN")
@@ -9,7 +8,7 @@ LOG_DATA = config.get('S3','LOG_DATA')
 LOG_JSONPATH = config.get('S3','LOG_JSONPATH')
 SONG_DATA = config.get('S3','SONG_DATA')
 
-# DROP TABLES
+# DROP TABLES Queries
 staging_events_table_drop = "DROP TABLE IF EXISTS staging_events;"
 staging_songs_table_drop = "DROP TABLE IF EXISTS staging_songs;"
 songplay_table_drop = "DROP TABLE IF EXISTS songplays;"
@@ -18,7 +17,7 @@ song_table_drop = "DROP TABLE IF EXISTS songs;"
 artist_table_drop = "DROP TABLE IF EXISTS artists;"
 time_table_drop = "DROP TABLE IF EXISTS time;"
 
-# CREATE TABLES
+# CREATE TABLES Queries
 staging_events_table_create= ("""
 CREATE TABLE staging_events (
 artist text,
@@ -107,8 +106,7 @@ year int,
 weekday int);
 """)
 
-# STAGING TABLES
-
+# STAGING TABLES Queries
 staging_events_copy = ("""
 copy staging_events from 's3://udacity-dend/log_data'
 credentials 'aws_iam_role={}'
@@ -124,7 +122,7 @@ json 'auto'
 region 'us-west-2';
 """).format(ARN)
 
-# FINAL TABLES
+# Insert Queries for FINAL TABLES 
 songplay_table_insert = ("""
 INSERT INTO songplays 
 (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
@@ -197,7 +195,6 @@ WHERE se.page = 'NextSong'
 """)
 
 # QUERY LISTS
-
 create_table_queries = [staging_events_table_create, staging_songs_table_create, songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
 drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
 copy_table_queries = [staging_events_copy, staging_songs_copy]
