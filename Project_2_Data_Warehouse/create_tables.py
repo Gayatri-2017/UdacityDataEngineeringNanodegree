@@ -8,6 +8,7 @@ def drop_tables(cur, conn):
     The method drop tables if the tables are already existing in Redshift
     '''
     for query in drop_table_queries:
+        print("query = \n", query)
         cur.execute(query)
         conn.commit()
 
@@ -17,6 +18,7 @@ def create_tables(cur, conn):
     The method create new tables in Redshift
     '''
     for query in create_table_queries:
+        print("query = \n", query)
         cur.execute(query)
         conn.commit()
 

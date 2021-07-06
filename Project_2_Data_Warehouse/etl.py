@@ -7,6 +7,7 @@ def load_staging_tables(cur, conn):
     The function is used for loading the data into staging tables from S3 buckets.
     '''
     for query in copy_table_queries:
+        print("query = \n", query)
         cur.execute(query)
         conn.commit()
 
@@ -16,6 +17,7 @@ def insert_tables(cur, conn):
     The function is used to insert the data into analytical tables from the staging tables. 
     '''
     for query in insert_table_queries:
+        print("query = \n", query)
         cur.execute(query)
         conn.commit()
 

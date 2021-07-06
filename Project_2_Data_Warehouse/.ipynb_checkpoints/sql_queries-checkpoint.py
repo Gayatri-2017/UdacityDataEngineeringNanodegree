@@ -69,19 +69,22 @@ song_id text NOT NULL,
 artist_id text NOT NULL, 
 session_id int, 
 location text, 
-user_agent text);
-DISTSTYLE KEY
+user_agent text,
+foreign key(user_id) references users(user_id),
+foreign key(start_time) references time(start_time),
+foreign key(song_id) references songs(song_id),
+foreign key(artist_id) references artists(artist_id))
 DISTKEY (start_time)
 """)
 
 '''
 Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
-I am adding an explicit NOT NULL condition to user_id instead of PRIMARY KEY constraint.
+I am adding an explicit NOT NULL condition to user_id alongwith of PRIMARY KEY constraint.
 '''
 
 user_table_create = ("""
 CREATE TABLE IF NOT EXISTS users
-(user_id int NOT NULL,
+(user_id int PRIMARY KEY NOT NULL,
 first_name text NOT NULL, 
 last_name text NOT NULL, 
 gender text,
@@ -90,12 +93,12 @@ level text);
 
 '''
 Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
-I am adding an explicit NOT NULL condition to song_id instead of PRIMARY KEY constraint.
+I am adding an explicit NOT NULL condition to song_id alongwith of PRIMARY KEY constraint.
 '''
 
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS songs 
-(song_id text NOT NULL, 
+(song_id text PRIMARY KEY NOT NULL, 
 title text NOT NULL, 
 artist_id text NOT NULL, 
 year int, 
@@ -104,12 +107,12 @@ duration decimal);
 
 '''
 Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
-I am adding an explicit NOT NULL condition to artist_id instead of PRIMARY KEY constraint.
+I am adding an explicit NOT NULL condition to artist_id alongwith of PRIMARY KEY constraint.
 '''
 
 artist_table_create = ("""
 CREATE TABLE IF NOT EXISTS artists 
-(artist_id text NOT NULL, 
+(artist_id text PRIMARY KEY NOT NULL, 
 name text NOT NULL, 
 location text, 
 latitude decimal, 
@@ -118,19 +121,19 @@ longitude decimal);
 
 '''
 Since Redshift Primary key constraint is informational only and they are not enforced by Amazon Redshift,
-I am adding an explicit NOT NULL condition to start_time instead of PRIMARY KEY constraint.
+I am adding an explicit NOT NULL condition to start_time alongwith of PRIMARY KEY constraint.
 Since, time_table wouldn't be large, I am performing a ALL distribution on this table.
 '''
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS time 
-(start_time timestamp NOT NULL, 
+(start_time timestamp PRIMARY KEY NOT NULL, 
 hour int, 
 day int, 
 week int, 
 month int, 
 year int, 
-weekday int);
-DISTSTYLE ALL
+weekday int)
+DISTSTYLE ALL;
 """)
 
 # STAGING TABLES Queries
@@ -223,7 +226,7 @@ WHERE se.page = 'NextSong'
 """)
 
 # QUERY LISTS
-create_table_queries = [staging_events_table_create, staging_songs_table_create, songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
+create_table_queries = [staging_events_table_create, staging_songs_table_create, user_table_create, song_table_create, artist_table_create, time_table_create, songplay_table_create]
 drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
 copy_table_queries = [staging_events_copy, staging_songs_copy]
-insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
+insert_table_queries = [user_table_insert, song_table_insert, artist_table_insert, time_table_insert, songplay_table_insert]
