@@ -21,11 +21,18 @@ def create_spark_session():
         .builder \
         .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:2.7.0") \
         .getOrCreate()
+
+    # Changing the logging level to see only Error logs on Console
     spark.sparkContext.setLogLevel("ERROR")
     return spark
 
 
 def process_song_data(spark, input_data, output_data):
+    '''
+    The method creates songs_table and artists_table using the song_data in S3.
+    '''
+    
+    
     # get filepath to song data file
     song_data = input_data + config['FILE_PATHS']['SONG_DATA_PATH']
     
@@ -46,7 +53,7 @@ def process_song_data(spark, input_data, output_data):
     reqd_col_list = ["artist_id", "name", "location", "latitude", "longitude"]
     exprs = ['{} as {}'.format(orig_col_list[i], reqd_col_list[i]) for i in range(len(orig_col_list)) ]
     
-    artists_table = song_df.selectExpr(*exprs)
+    artists_table = song_df.selectExpr(*exprs).distinct()
     
     # write artists table to parquet files
     artists_table.write \
@@ -55,6 +62,10 @@ def process_song_data(spark, input_data, output_data):
 
 
 def process_log_data(spark, input_data, output_data):
+    '''
+    The method creates users_table, time_table and songplays_table using the song_data in S3.
+    '''
+    
     # get filepath to log data file
     log_data = input_data + config['FILE_PATHS']['LOG_DATA_PATH']
 
@@ -68,7 +79,7 @@ def process_log_data(spark, input_data, output_data):
     orig_col_list = ["userId", "firstName", "lastName", "gender", "level"]
     reqd_col_list = ["user_id", "first_name", "last_name", "gender", "level"]
     exprs = ['{} as {}'.format(orig_col_list[i], reqd_col_list[i]) for i in range(len(orig_col_list)) ]
-    users_table = log_df.selectExpr(*exprs)
+    users_table = log_df.selectExpr(*exprs).distinct()
     
     # write users table to parquet files
     users_table.write \
@@ -90,7 +101,7 @@ def process_log_data(spark, input_data, output_data):
                     .withColumn("year", year("timestamp")) \
                     .withColumn("weekday", dayofweek("timestamp"))
     # extract columns to create time table
-    time_table = log_df.select("start_time", "hour", "dayofmonth", "weekofyear", "month", "year", "weekday")
+    time_table = log_df.select("start_time", "hour", "dayofmonth", "weekofyear", "month", "year", "weekday").distinct()
     
     # write time table to parquet files partitioned by year and month
     time_table.write \
@@ -99,8 +110,6 @@ def process_log_data(spark, input_data, output_data):
             .parquet(output_data + "time_table/")
 
     # read in song data to use for songplays table
-#     song_df = spark.read.parquet(output_data + "songs_table/").select("song_id", "artist_id", "title", "artist_name", "duration").distinct()
-
     spark.read.parquet("songs_table").createOrReplaceTempView("songs_table")
     spark.read.parquet("artists_table").createOrReplaceTempView("artists_table")
     
@@ -143,7 +152,7 @@ def process_log_data(spark, input_data, output_data):
 def main():
     spark = create_spark_session()
     input_data = "s3a://udacity-dend/"
-    output_data = ""
+    output_data = "s3a://udacity-output/"
     
     process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
