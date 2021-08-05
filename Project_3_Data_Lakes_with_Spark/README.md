@@ -15,26 +15,12 @@ There are multiple decision rationale involved in choosing this datamodel which 
 
 | Decision Made  |  Reasoning behind |
 |----------------|-------------------|
-| Choice of AWS S3 with Spark | Spark works best with Partitioned Data Store, as it can work and process efficiently.  The data is structured in the form of JSON files and hence it is fixed. <br>The data size is moderate size and huge. <br>The data can be joined and analyzed using the relational database and joins|
+| Choice of AWS S3 with Spark | Spark works best with Partitioned Data Store, as it can process efficiently and parallely in chunks. <br>S3 gives a permanent storage independent of the EMR cluster. Hence the data is always available in S3 buckets. Also the storage cost of S3 is less than using the HDFS in EMR and keeping the cluster running all the time.|
 | Choice of Star Schema  |  Multiple tables are involved in the join <br>Efficient to have a fact table with the required metrics and foreign keys from other tables |
 
 
 Schema for Song Play Analysis
 The project includes the following tables.
-
-## Staging Tables
-
-These tables are used to load the data directly from S3 buckets to table, without any transformations
-
-`staging_events` - To store data from Log data JSON files to staging_events table.
-
-| artist | auth | firstName |	gender | itemInSession | lastName |	length | level | location |	method | page |	registration |	sessionId |	song |	status |	ts |	userAgent |	userId |
-| ---- | ---- | ---- |	---- | ---- | ---- |	---- | ---- | ---- |	---- | ---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |
-
-`staging_songs` - To store data from Song data JSON files to staging_songs table.
-
-| num_songs |	artist_id |	artist_latitude |	artist_longitude |	artist_location |	artist_name |	song_id |	title |	duration |	year |
-| ---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |	---- |
 
 ## Fact Table
 
@@ -43,6 +29,7 @@ These tables are used to load the data directly from S3 buckets to table, withou
 | songplay_id | start_time | user_id | level | song_id | artist_id | session_id | location | user_agent |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |     
 
+(The table is stored in Parquet format partitioned by year and month)
 
 ## Dimension Tables
 
@@ -51,52 +38,45 @@ These tables are used to load the data directly from S3 buckets to table, withou
 | user_id | first_name | last_name | gender | level |
 | ---- | ---- | ---- | ---- | ---- |
 
+(The table is stored in Parquet format)
+
 `songs` - songs in music database
 
 | song_id | title | artist_id | year | duration |
 | ---- | ---- | ---- | ---- | ---- |
+
+(The table is stored in Parquet format partitioned by year and artist_id)
 
 `artists` - artists in music database
 
 | artist_id | name | location | latitude | longitude |
 | ---- | ---- | ---- | ---- | ---- |
 
+(The table is stored in Parquet format)
+
 `time` - timestamps of records in songplays broken down into specific units
 
 | start_time | hour | day | week | month | year | weekday |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | 
 
+(The table is stored in Parquet format partitioned by year and month)
 
 # Description of the files in this Project
 
-`dwh.cfg`
-Contains configuration details for connecting to Redshift cluster. 
-
-`create_tables.py` 
-Contains script to delete existing tables and create new tables in the database. 
-It can be used to reset the tables before running the ETL scripts.
+`dl.cfg`
+Contains AWS credentials details for connecting to AWS. Also, it contains the Log and songs directory path. 
 
 `etl.py` 
-Reads and processes files from song_data and log_data and loads them into the Database tables. 
-
-`sql_queries.py` 
-Contains all the sql queries required in this Project
+Reads and processes files from song_data and log_data and loads them into S3 in Parquet Format. 
 
 `README.md` 
 Contains documentation and information about the Project
 
 # Running of the project:
 
-Step 0: Start the Redshift cluster and enter the credentials in `dwh.cfg` configuration
+Step 0: Enter the AWS credentials in `dl.cfg` configuration file.
 
-Step 1: Create the Database and the tables
-Run the Following command in the terminal
-
-`
-python create_tables.py
-`
-
-Step 2: Run the ETL pipeline to load the data from JSON to Postgres Database
+Step 1: Run the ETL pipeline to load the JSON data in S3 into Analytical tables stored as Parquet in S3 bucket.
 
 `
 python etl.py
