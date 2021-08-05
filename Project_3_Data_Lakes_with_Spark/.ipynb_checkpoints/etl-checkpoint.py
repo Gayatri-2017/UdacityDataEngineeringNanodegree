@@ -110,8 +110,8 @@ def process_log_data(spark, input_data, output_data):
             .parquet(output_data + "time_table/")
 
     # read in song data to use for songplays table
-    spark.read.parquet("songs_table").createOrReplaceTempView("songs_table")
-    spark.read.parquet("artists_table").createOrReplaceTempView("artists_table")
+    spark.read.parquet(output_data + "songs_table/").createOrReplaceTempView("songs_table")
+    spark.read.parquet(output_data + "artists_table/").createOrReplaceTempView("artists_table")
     
     query_1 = """
     SELECT song_id, 
@@ -152,7 +152,8 @@ def process_log_data(spark, input_data, output_data):
 def main():
     spark = create_spark_session()
     input_data = "s3a://udacity-dend/"
-    output_data = "s3a://udacity-output/"
+#     output_data = "s3a://udacity-output/"
+    output_data = ""
     
     process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
