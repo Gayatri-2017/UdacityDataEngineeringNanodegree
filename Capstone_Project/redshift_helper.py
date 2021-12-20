@@ -24,31 +24,21 @@ def execute_select_dataframe(query=None):
         conn = obtain_redshift_connector()
 
         cursor = conn.cursor()
-        return cursor.execute(query).fetch_dataframe()
+        df = cursor.execute(query).fetch_dataframe()
+        cursor.close()
 
+        conn.commit()
+        conn.close()
+
+        return df
 
 def execute_insert(query=None, values=None):
-    print("Inside execute_insert")
-    print("values = ", values)
     if query:
-        print("INside if")
         conn = obtain_redshift_connector()
 
         cursor = conn.cursor()
         cursor.execute(query, values)
+        cursor.close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        conn.commit()
+        conn.close()

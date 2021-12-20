@@ -39,15 +39,6 @@ def call_position_api(insert_query_parameters):
 	res = conn.getresponse()	
 	return json.loads(res.read().decode('utf-8'))["data"][0]
 
-def format_input(input_str, is_string=True):
-	if input_str:
-		if is_string:
-			return "'" + input_str + "'"
-		else:
-			return str(input_str)
-	else:
-			return str("null")			
-
 def insert_into_geocoding_mapping(insert_query_parameters):
 
 	sql_queries_config = dict(config.items('sql_queries'))
@@ -68,32 +59,32 @@ for row in df.iterrows():
 	if i == 2:
 		break
 
-	insert_query_parameters = {"source_country_name": format_input(row[1]["country_name"]),
-							   "source_latitude" 	: format_input(row[1]["latitude"], False),
-							   "source_longitude" 	: format_input(row[1]["longitude"], False)
+	insert_query_parameters = {"source_country_name": row[1]["country_name"],
+							   "source_latitude" 	: float(row[1]["latitude"]),
+							   "source_longitude" 	: float(row[1]["longitude"])
 							}
 
 	data = call_position_api(insert_query_parameters)
 
 	insert_query_parameters.update({
-				"result_latitude" 				: format_input(data["latitude"], False),
-				"result_longitude" 				: format_input(data["longitude"], False),
-				"result_type" 					: format_input(data["type"]),
-				"result_name" 					: format_input(data["name"]),
-				"result_number" 				: format_input(data["number"], False),
-				"result_postal_code" 			: format_input(data["postal_code"]),
-				"result_street"	 				: format_input(data["street"]),
-				"result_confidence" 			: format_input(data["confidence"], False),
-				"result_region" 				: format_input(data["region"]),
-				"result_region_code" 			: format_input(data["region_code"]),
-				"result_county" 				: format_input(data["county"]),
-				"result_locality" 				: format_input(data["locality"]),
-				"result_administrative_area" 	: format_input(data["administrative_area"]),
-				"result_neighbourhood" 			: format_input(data["neighbourhood"]),
-				"result_country" 				: format_input(data["country"]),
-				"result_country_code" 			: format_input(data["country_code"]),
-				"result_continent" 				: format_input(data["continent"]),
-				"result_label" 					: format_input(data["label"])
+				"result_latitude" 				: data["latitude"],
+				"result_longitude" 				: data["longitude"],
+				"result_type" 					: data["type"],
+				"result_name" 					: data["name"],
+				"result_number" 				: data["number"],
+				"result_postal_code" 			: data["postal_code"],
+				"result_street"	 				: data["street"],
+				"result_confidence" 			: data["confidence"],
+				"result_region" 				: data["region"],
+				"result_region_code" 			: data["region_code"],
+				"result_county" 				: data["county"],
+				"result_locality" 				: data["locality"],
+				"result_administrative_area" 	: data["administrative_area"],
+				"result_neighbourhood" 			: data["neighbourhood"],
+				"result_country" 				: data["country"],
+				"result_country_code" 			: data["country_code"],
+				"result_continent" 				: data["continent"],
+				"result_label" 					: data["label"]
 				})
 
 	insert_into_geocoding_mapping(insert_query_parameters)
