@@ -1,5 +1,6 @@
 import redshift_connector
 import configparser
+from sql_queries import sql_queries_dict
 
 def get_redshift_config():
     config = configparser.RawConfigParser()
@@ -42,3 +43,38 @@ def execute_insert(query=None, values=None):
 
         conn.commit()
         conn.close()
+
+def create_all_tables():
+    conn = obtain_redshift_connector()
+
+    cursor = conn.cursor()
+
+    # sql_queries_config = dict(config.items('sql_queries'))
+    
+
+    create_tables_list = ["world_covid", "geocoding_mapping", "state_wise"]
+
+    for table in create_tables_list:
+        create_query = sql_queries_dict["create_{}_query".format(table)]
+        cursor.execute(create_query)
+    
+    cursor.close()
+
+    conn.commit()
+    conn.close()
+
+def copy_data_into_tables():
+
+    copy_tables_list = ["world_covid"] 
+
+    for table in copy_tables_list:
+        copy_query = sql_queries_dict["copy_{}_query".format(table)]
+        cursor.execute(copy_query)
+
+    cursor.close()
+
+    conn.commit()
+    conn.close()
+
+
+

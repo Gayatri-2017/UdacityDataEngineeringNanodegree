@@ -5,9 +5,12 @@ import pandas as pd
 import ast
 import configparser
 import redshift_helper
+from sql_queries import sql_queries_dict
 
 config = configparser.RawConfigParser()
 config.read('config.cfg')
+
+redshift_helper.create_all_tables()
 
 def get_lat_lon_list():
 
@@ -15,8 +18,8 @@ def get_lat_lon_list():
 	Obtain only those latitude, longitude that do not already exist in geocoding_mapping, 
 	to optimize API calls.
 	'''
-	sql_queries_config = dict(config.items('sql_queries'))
-	query = sql_queries_config["obtain_lat_lon_list"]
+
+	query = sql_queries_dict["obtain_lat_lon_list"]
 	return redshift_helper.execute_select_dataframe(query)
 
 def call_position_api(insert_query_parameters):
@@ -41,14 +44,9 @@ def call_position_api(insert_query_parameters):
 
 def insert_into_geocoding_mapping(insert_query_parameters):
 
-	sql_queries_config = dict(config.items('sql_queries'))
-	insert_query_format = sql_queries_config["insert_into_geocoding_mapping_query_format"]
+	insert_query_format = sql_queries_dict["insert_into_geocoding_mapping_query_format"]
 	insert_query = insert_query_format.format(col_list = ", ".join(insert_query_parameters.keys()))
-
-	print(insert_query)
-
 	redshift_helper.execute_insert(insert_query, tuple(insert_query_parameters.values()))
-	
 
 df = get_lat_lon_list()
 
