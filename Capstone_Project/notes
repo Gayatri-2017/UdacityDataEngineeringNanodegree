@@ -1,0 +1,149 @@
+To run the google-api.py
+pip install google
+pip install google.cloud
+pip install --upgrade google-cloud-bigquery
+pip install google-cloud-bigquery
+pip install requests
+
+data types for Athena table create
+
+country_name string,
+state_name string,
+county_code_fips string,
+county_name string,
+latitude decimal(10, 6),
+longitude decimal(10, 6),
+confirmed bigint,
+deaths bigint,
+recovered bigint,
+active bigint,
+refresh_date date,
+combined_key string,
+last_updated timestamp,
+incidence_rate decimal (15, 5),
+case_fatality_ratio decimal (15, 5)
+
+DDL
+
+CREATE EXTERNAL TABLE IF NOT EXISTS `udacity-capstone-project`.`world_covid` (
+`country_name` string,
+`state_name` string,
+`county_code_fips` string,
+`county_name` string,
+`latitude` decimal,
+`longitude` decimal,
+`confirmed` bigint,
+`deaths` bigint,
+`recovered` bigint,
+`active` bigint,
+`refresh_date` date,
+`combined_key` string,
+`last_updated` timestamp,
+`incidence_rate` decimal,
+`case_fatality_ratio` decimal
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+WITH SERDEPROPERTIES (
+'serialization.format' = ',',
+'field.delim' = ','
+) LOCATION 's3://udacity-capstone-project-gg/world_covid'
+TBLPROPERTIES ('has_encrypted_data'='false');
+
+
+WORKING:
+"No module named google.cloud" you need a python environment for google cloud.
+pip install virtualenv
+virtualenv udacity-project-1
+source udacity-project-1/bin/activate
+udacity-project-1/bin/pip install google-cloud-bigquery
+
+pip install boto3
+pip install pandas
+pip install pyarrow
+pip install fsspec
+pip install  s3fs
+pip install configparser
+
+Installing and connecting to Redshift
+git clone https://github.com/aws/amazon-redshift-python-driver.git
+cd amazon-redshift-python-driver/
+pip install .
+
+
+Create and download credentials file
+https://cloud.google.com/docs/authentication/getting-started
+
+Setting path for Google Credentials
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/apple/Desktop/Udacity/Capstone_Project/molten-gantry-301621-06b56bfa11e8.json"
+
+CREATE table in Redshift
+
+drop table if exists dev.public.world_covid;
+
+CREATE TABLE public.world_covid 
+( id int not null,
+country_name VARCHAR(256) NOT NULL,
+state_name VARCHAR(256),
+county_code_fips VARCHAR(256),
+county_name VARCHAR(256),
+latitude decimal(10, 6),
+longitude decimal(10, 6),
+confirmed bigint,
+deaths bigint,
+recovered bigint,
+active bigint,
+refresh_date date,
+combined_key VARCHAR(256) NOT NULL,
+last_updated timestamp,
+incidence_rate decimal(15, 5),
+case_fatality_ratio decimal(15, 5)
+);
+
+COPY Command for Redshift
+
+copy public.world_covid 
+from 's3://udacity-capstone-project-gg/world_covid/'
+CREDENTIALS
+'aws_access_key_id=AKIAXFOF5KU27BOAG6FM;aws_secret_access_key=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'
+IGNOREHEADER 1
+FORMAT AS CSV
+;
+
+
+CREATE TABLE public.geocoding_mapping 
+( source_country_name VARCHAR(256)
+, source_latitude decimal(10, 6)
+, source_longitude decimal(10, 6)
+, result_latitude decimal(10, 6)
+, result_longitude decimal(10, 6)
+, result_type VARCHAR(256)
+, result_name VARCHAR(256)
+, result_number int
+, result_postal_code VARCHAR(16)
+, result_street VARCHAR(256)
+, result_confidence float
+, result_region VARCHAR(256)
+, result_region_code VARCHAR(16)
+, result_county VARCHAR(256)
+, result_locality VARCHAR(256)
+, result_administrative_area VARCHAR(256)
+, result_neighbourhood VARCHAR(256)
+, result_country VARCHAR(256)
+, result_country_code VARCHAR(16)
+, result_continent VARCHAR(256)
+, result_label VARCHAR(256)
+);
+
+debugging error
+
+select *
+from stl_load_errors
+
+select le.starttime, d.query, d.line_number, d.colname, d.value,
+le.raw_line, le.err_reason    
+from stl_loaderror_detail d, stl_load_errors le
+where d.query = le.query
+order by le.starttime desc
+limit 10
+
+
