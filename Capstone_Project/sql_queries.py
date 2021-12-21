@@ -118,7 +118,7 @@ refresh_date date
 "copy_world_covid_query" : """COPY public.world_covid 
     FROM 's3://udacity-capstone-project-gg/world_covid/'
     CREDENTIALS
-    'aws_access_key_id=AKIAXFOF5KU27BOAG6FM;aws_secret_access_key=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'
+    'aws_access_key_id={aws_access_key_id};aws_secret_access_key={aws_secret_access_key}'
     IGNOREHEADER 1
     FORMAT AS CSV;
     """    
