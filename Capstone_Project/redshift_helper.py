@@ -5,9 +5,14 @@ from sql_queries import sql_queries_dict
 def get_redshift_config():
     config = configparser.RawConfigParser()
     config.read('config.cfg')
-    redshift_connection_config = dict(config.items('redshift_connection'))
 
-    return redshift_connection_config
+    return dict(config.items('redshift_connection'))
+
+def get_aws_config():
+    config = configparser.RawConfigParser()
+    config.read('config.cfg')
+
+    return dict(config.items('aws_connection'))
 
 def obtain_redshift_connector():
 # Connects to Redshift cluster using AWS credentials
@@ -65,10 +70,12 @@ def create_all_tables():
 
 def copy_data_into_tables():
 
+    aws_connection_config = get_aws_config()
     copy_tables_list = ["world_covid"] 
 
     for table in copy_tables_list:
-        copy_query = sql_queries_dict["copy_{}_query".format(table)]
+        copy_query = sql_queries_dict["copy_{}_query".format(table)].format(aws_access_key_id=aws_connection_config["aws_access_key_id"],
+                                                                            aws_secret_access_key=aws_connection_config["aws_secret_access_key"])
         cursor.execute(copy_query)
 
     cursor.close()

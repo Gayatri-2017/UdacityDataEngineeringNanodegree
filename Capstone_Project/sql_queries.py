@@ -27,7 +27,7 @@ latitude, longitude, confirmed, deaths, recovered, active, refresh_date)
 WITH latest_world_covid AS 
 (SELECT wc.id
 , wc.country_name
-, gm.state_name
+, COALESCE(wc.state_name, gm.state_name)
 , wc.latitude
 , wc.longitude
 , wc.confirmed
@@ -55,7 +55,7 @@ SELECT id
 FROM latest_world_covid
 WHERE latest_row = 1
 )
-
+,
 "create_geocoding_mapping_query" : """CREATE TABLE IF NOT EXISTS public.geocoding_mapping 
 ( source_country_name VARCHAR(256)
 , source_latitude decimal(10, 6)
