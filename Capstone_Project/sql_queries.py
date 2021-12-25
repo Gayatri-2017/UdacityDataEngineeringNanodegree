@@ -54,7 +54,7 @@ SELECT id
 , refresh_date
 FROM latest_world_covid
 WHERE latest_row = 1
-)
+)"""
 ,
 "create_geocoding_mapping_query" : """CREATE TABLE IF NOT EXISTS public.geocoding_mapping 
 ( source_country_name VARCHAR(256)
