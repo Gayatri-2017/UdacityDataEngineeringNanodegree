@@ -1,1 +1,3 @@
+# IntendedCapstoneProjectWorkflow
+
 ![IntendedCapstoneProjectWorkflow](readme_images/IntendedCapstoneProjectWorkflow.png)
