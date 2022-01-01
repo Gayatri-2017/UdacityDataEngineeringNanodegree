@@ -5,6 +5,7 @@ Capstone_Project/molten-gantry-301621-06b56bfa11e8.json
 Capstone_Project/.DS_Store
 Capstone_Project/notes
 Capstone_Project/__pycache__/redshift_helper.cpython-39.pyc
-Capstone_Project/amazon-redshift-python-driver
 Capstone_Project/google-api-conditional-select.py
 Capstone_Project/temp/
+.DS_Store
+Capstone_Project/amazon-redshift-python-driver
