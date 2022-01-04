@@ -123,5 +123,19 @@ class SqlQueries:
 	    'aws_access_key_id={aws_access_key_id};aws_secret_access_key={aws_secret_access_key}'
 	    IGNOREHEADER 1
 	    FORMAT AS CSV;
-	    """    
+	    """ 
+	,
+	"check_no_data_exists": """SELECT count(*)
+		FROM public.{table}
+	"""
+	,
+	"check_null": """SELECT count(*)
+		FROM public.{table}
+		WHERE {column} is null
+	"""
+	,
+	"check_negative": """SELECT count(*)
+		FROM public.{table}
+		WHERE {column} < 0
+	"""
 	})
