@@ -64,6 +64,7 @@ class PositionStack:
 		for row in df.iterrows():
 			# Having this condition to restrict API calls. 
 			# Remove this before submitting
+			# TODO: Remove this condition
 			i += 1
 			if i == 2:
 				break

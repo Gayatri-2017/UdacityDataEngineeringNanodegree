@@ -1,8 +1,8 @@
 from google.cloud import bigquery
 import boto3
 from datetime import datetime
-# import glob
-# import os
+import configparser
+
 
 class GoogleAPI:
     def get_bq_client(self):
@@ -21,22 +21,29 @@ class GoogleAPI:
                 SELECT * 
                 FROM `covid-assistant.covid.world_covid` 
                 """ 
-
-            # 200000
             # 200000
 
     def get_last_updated_date(self):
 
-        s3resource = boto3.resource('s3') 
-        files = list(s3resource.Bucket('udacity-capstone-project-gg').objects.filter(Prefix='world_covid/'))
+        config = configparser.RawConfigParser()
+        config.read('config.cfg')
+
+        s3_details_config = dict(config.items('s3_details'))
+        bucket_name = s3_details_config["bucket_name"]
+        prefix = s3_details_config["prefix"]
+        file_ext_with_dot = s3_details_config["file_ext_with_dot"]
+        start_date = s3_details_config["start_date"]
+
+        s3resource = boto3.resource('s3')     
+        files = list(s3resource.Bucket(bucket_name).objects.filter(Prefix=prefix))
 
         files_list = [file.key.split('/')[-1] for file in files]
         files_list.sort()
 
         if (len(files_list)) > 1:
-            return files_list[-1].split(".csv")[0]
+            return files_list[-1].split(file_ext_with_dot)[0]
         else:
-            return '2020-01-01'
+            return start_date
 
     def get_today_date(self):
 
@@ -45,10 +52,7 @@ class GoogleAPI:
     def incremental_load_query(self, limit):
 
         """
-        Currently functions same as full_load. 
-        Ideally, it should find out the max updated_date from world_covid table.
-        And fetch data from Google API greater than this max updated date
-        TODO: figure out how to store incremental data into s3
+        Find the last load date, based on file name, and load data after that load date till today. 
         """
 
         last_date = self.get_last_updated_date()
@@ -92,12 +96,15 @@ class GoogleAPI:
 
     def save_df_to_s3(self, df):
 
-        # table = "world_covid"
-        s3_bucket_path = 's3://udacity-capstone-project-gg/world_covid/'
+        config = configparser.RawConfigParser()
+        config.read('config.cfg')
 
+        s3_details_config = dict(config.items('s3_details'))
+        s3_bucket_path = s3_details_config["s3_bucket_path"]
+        file_ext = s3_details_config["file_ext"]
+        file_ext_with_dot = s3_details_config["file_ext_with_dot"]
 
-        # df.to_csv(s3_bucket_path+self.get_today_date()+".csv")
-        df.to_parquet(s3_bucket_path+self.get_today_date()+".gzip", compression='gzip')
+        df.to_parquet(s3_bucket_path+self.get_today_date()+file_ext_with_dot, compression=file_ext)
 
 
     def implementor(self, limit=None, load_type='incremental_load'):

@@ -1,9 +1,6 @@
 import redshift_connector
 import configparser
 
-import sys
-# print("Inside RedshiftHelper, sys.path = ", sys.path)
-
 from plugins.helpers.sql_queries import SqlQueries
 
 class RedshiftHelper:
