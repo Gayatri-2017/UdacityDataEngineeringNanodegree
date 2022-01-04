@@ -57,7 +57,7 @@ class GoogleAPI:
             return """
             SELECT * 
             FROM `covid-assistant.covid.world_covid` 
-            WHERE last_updated > '2022-01-01'
+            WHERE last_updated > '{last_date}'
             LIMIT {limit}
             """.format(limit=limit, last_date=last_date)
         else:
@@ -97,7 +97,7 @@ class GoogleAPI:
 
 
         # df.to_csv(s3_bucket_path+self.get_today_date()+".csv")
-        df.to_parquet(s3_bucket_path+"test"+".gzip", compression='gzip')
+        df.to_parquet(s3_bucket_path+self.get_today_date()+".gzip", compression='gzip')
 
 
     def implementor(self, limit=None, load_type='incremental_load'):

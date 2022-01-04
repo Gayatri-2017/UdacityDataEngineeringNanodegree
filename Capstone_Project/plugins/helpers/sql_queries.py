@@ -23,12 +23,11 @@ class SqlQueries:
 	%s, %s, %s);
 	"""
 	,
-	"insert_into_state_wise_trend": """INSERT INTO public.state_wise_trend (id, country_name, state_name,
+	"insert_into_state_wise_trend": """INSERT INTO public.state_wise_trend (country_name, state_name,
                                      latitude, longitude, confirmed, deaths, recovered, active,
                                      refresh_date) 
 	(WITH latest_world_covid AS 
-	(SELECT wc.id
-	, wc.country_name
+	(SELECT wc.country_name
 	, COALESCE(wc.state_name, gm.result_region) as state_name
 	, wc.latitude
 	, wc.longitude
@@ -45,8 +44,7 @@ class SqlQueries:
 		AND wc.longitude = gm.source_longitude
 		AND wc.country_name = gm.source_country_name
 	)
-	SELECT id
-	, country_name
+	SELECT country_name
 	, state_name
 	, latitude
 	, longitude
@@ -83,7 +81,7 @@ class SqlQueries:
 	);
 	"""
 	,
-	"create_world_covid_query" : """CREATE TABLE IF NOT EXISTS public.world_covid 
+	"create_world_covid_query_csv_format" : """CREATE TABLE IF NOT EXISTS public.world_covid 
 	( id int not null,
 	country_name VARCHAR(256) NOT NULL,
 	state_name VARCHAR(256),
@@ -103,9 +101,27 @@ class SqlQueries:
 	);
 	"""
 	,
+	"create_world_covid_query" : """CREATE TABLE IF NOT EXISTS public.world_covid 
+	( country_name VARCHAR(256) NOT NULL,
+	state_name VARCHAR(256),
+	county_code_fips float8,
+	county_name float8,
+	latitude float8,
+	longitude float8,
+	confirmed bigint,
+	deaths bigint,
+	recovered float8,
+	active float8,
+	refresh_date date,
+	combined_key VARCHAR(256) NOT NULL,
+	last_updated timestamp,
+	incidence_rate float8,
+	case_fatality_ratio float8
+	);
+	"""
+	,
 	"create_state_wise_trend_query": """CREATE TABLE IF NOT EXISTS public.state_wise_trend 
-	( id int not null,
-	country_name VARCHAR(256) NOT NULL,
+	( country_name VARCHAR(256) NOT NULL,
 	state_name VARCHAR(256),
 	latitude decimal(10, 6),
 	longitude decimal(10, 6),
@@ -117,7 +133,7 @@ class SqlQueries:
 	);
 	"""
 	,
-	"copy_world_covid_query" : """COPY public.world_covid 
+	"copy_world_covid_query_csv_format" : """COPY public.world_covid 
 	    FROM 's3://udacity-capstone-project-gg/world_covid/'
 	    CREDENTIALS
 	    'aws_access_key_id={aws_access_key_id};aws_secret_access_key={aws_secret_access_key}'
@@ -125,17 +141,27 @@ class SqlQueries:
 	    FORMAT AS CSV;
 	    """ 
 	,
+	"copy_world_covid_query" : """COPY public.world_covid 
+	    FROM 's3://udacity-capstone-project-gg/world_covid/'
+	    CREDENTIALS
+	    'aws_access_key_id={aws_access_key_id};aws_secret_access_key={aws_secret_access_key}'
+	    FORMAT AS PARQUET;
+	    """ 
+	,
 	"check_no_data_exists": """SELECT count(*)
-		FROM public.{table}
+		FROM public.{table};
 	"""
 	,
 	"check_null": """SELECT count(*)
 		FROM public.{table}
-		WHERE {column} is null
+		WHERE {column} is null;
 	"""
 	,
 	"check_negative": """SELECT count(*)
 		FROM public.{table}
-		WHERE {column} < 0
+		WHERE {column} < 0;
+	"""
+	,
+	"drop_table_query": """DROP TABLE IF EXISTS public.{table};
 	"""
 	})

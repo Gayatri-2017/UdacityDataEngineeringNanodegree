@@ -189,3 +189,24 @@ class RedshiftHelper:
 
         conn.commit()
         conn.close()
+
+    def drop_tables(self, drop_tables_list=[]):
+        
+        if(not drop_tables_list):
+            drop_tables_list = ["world_covid", "geocoding_mapping", "state_wise_trend"]
+
+        conn = self.obtain_redshift_connector()
+        cursor = conn.cursor()
+
+        for table in drop_tables_list:
+            drop_query = SqlQueries.sql_queries_dict["drop_table_query"].format(table=table)
+            cursor.execute(drop_query)
+        
+        cursor.close()
+
+        conn.commit()
+        conn.close()
+
+
+
+
