@@ -5,7 +5,8 @@ sys.path.append("/Users/apple/Desktop/Udacity/Git_Udacity/UdacityDataEngineering
 from plugins.helpers import SqlQueries, RedshiftHelper, PositionStack, GoogleAPI
 
 # # Load data from Google API
-# GoogleAPI().implementor(load_type='incremental_load',limit=100)
+GoogleAPI().implementor(load_type='incremental_load',limit=100)
+#### GoogleAPI().implementor(load_type='full_load')
 # # Create all tables if not exists and copy data
 # RedshiftHelper().create_all_tables()
 # RedshiftHelper().copy_data_into_tables()
