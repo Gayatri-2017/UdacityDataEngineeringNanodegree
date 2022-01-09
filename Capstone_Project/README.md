@@ -32,7 +32,7 @@ Tableau Link: https://public.tableau.com/app/profile/gayatri.ganapathy/viz/World
 
 # Project Steps
 
-![ProjectSteps](readme_images/ProjectSteps.png)
+![ProjectSteps](readme_images/ProjectSteps-1.png)
 
 
 
