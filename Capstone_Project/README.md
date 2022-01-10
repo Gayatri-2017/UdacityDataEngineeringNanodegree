@@ -23,9 +23,9 @@ PositionStack API is used for obtaining Geocoding related information for a give
 | Tech Stack Used   | Usage in the Project      					  | Decision Rationale |
 |-------------------|-------------------------------------------------|--------------------|
 | Google Big Query  | To obtain the global covid-19 data for analysis | Contains very large publicly available dataset <br />Can be Easily queried and stored in any desired format. |
-| AWS S3 			| To store the data in Parquet format 			  | Highly-scalable, secured and low-latency cloud data storage <br \> Easy connection with Redshift database. <br \> Low storage cost |
-| AWS Redshift & Redshift Spectrum 	|  For storing data, performing transformations and executing analytical queries 													| Scalable and Reliable Database <br \> Supports Columnar storage for faster processing of analytical queries <br \> Easy for querying <br \> 
-| Tableau 			| For building dahsboard to visualize the data and obtain insights | Provides real-time connection to the live Redshift database. <br \> Provides real-time insights for answering various business queries interactively. |
+| AWS S3 			| To store the data in Parquet format 			  | Highly-scalable, secured and low-latency cloud data storage <br /> Easy connection with Redshift database. <br /> Low storage cost |
+| AWS Redshift & Redshift Spectrum 	|  For storing data, performing transformations and executing analytical queries 													| Scalable and Reliable Database <br /> Supports Columnar storage for faster processing of analytical queries <br /> Easy for querying <br /> 
+| Tableau 			| For building dahsboard to visualize the data and obtain insights | Provides real-time connection to the live Redshift database. <br /> Provides real-time insights for answering various business queries interactively. |
 | Python libraries:  boto3, google, pandas | To write scripts to execute the jobs in the project | Various libraries and conncetors available in Python. |
 
 <!-- ![IntendedCapstoneProjectWorkflow](readme_images/IntendedCapstoneProjectWorkflow.png) -->
