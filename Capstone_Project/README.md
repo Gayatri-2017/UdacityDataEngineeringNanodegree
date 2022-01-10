@@ -46,36 +46,36 @@ The project follows a Star Schema, storing the required and summarized facts in 
 
 ![ProjectSteps](readme_images/ProjectSteps-1.png)
 
-Step 1:
+## Step 1:
 The data is queried from Google Big Query using Python script. For the first time load, we perform a full-load of all the data since 2020-01-01. After the full-load is done, we can do an incremental load, to load only the data which is updated since the last time the data was loaded. This can be used for loading the data daily on regular basis. 
 
-Step 1.a:
+### Step 1.a:
 The data obtained from the Google Big Query is stored in Amazon S3, in Parquet format which is a columnar format for faster processing of analytical queries. 
 
-Step 1.b:
+### Step 1.b:
 A Redshift table is created based on the Amazon AWS S3 data from the above step. 
 
-Step 2:
+## Step 2:
 We then obtain a list of latitude-longitude pairs for which the geocoding mapping is not already resolved. This way, we only call the Position Stack API for those latitude longitude for which we have not already called. 
 
-Step 2.a:
+### Step 2.a:
 Call the Position Stack API for the list of latitude-longitude pairs from above step. 
 
-Step 2.b: 
+### Step 2.b: 
 Store the geocoding mapping information obtained from the above step in the Redshift table. 
 
-Step 3:
+## Step 3:
 Build the Fact table in Redshift using the World Covid data and the Position Stack data.
 
-Intermediate Step
+## Intermediate Step (Shown in green in the diagram)
 Obtain check report for the above newly created tables
 
-Step 4: 
+## Step 4: 
 Obtain insights using the Fact table on Tableau
 
 # Design Considerations
 
-1. The data was increased by 100x.
+## 1. The data was increased by 100x.
 For the World Covid data:
 Since the load is divided as initial load and incremental load, not all data is loaded from the start of date everytime. 
 Only the data which is updated after the previous load, is loaded in incremental load. 
@@ -83,10 +83,10 @@ Also, Parquet data format is used, for faster columnar read access for analytica
 For the Position Stack API:
 Only the latitude-longitude pairs, which are not called previously is called again, so to reduce the number of API calls made. 
 
-2. The pipelines would be run on a daily basis by 7 am every day.
+## 2. The pipelines would be run on a daily basis by 7 am every day.
 The script can be run daily for incremental load on daily basis using a CRON job. 
 Also, the project is modular, so the Python funcations can be used as python callables in Airflow tasks. 
 
-3. The database needed to be accessed by 100+ people.
+## 3. The database needed to be accessed by 100+ people.
 Amazon Redshift is a scalable cloud database which can be scaled to support more traffic by increasing the memory and/or the clusters. Also, Tableau can support many users viewing the dashboard. If required, the Tableau server can be upgraded to support more users and faster performance. 
 
