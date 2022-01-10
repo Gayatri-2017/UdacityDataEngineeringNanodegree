@@ -25,7 +25,7 @@ PositionStack API is used for obtaining Geocoding related information for a give
 | Google Big Query  | To obtain the global covid-19 data for analysis | * Contains very large publicly available dataset <br />* Can be Easily queried and stored in any desired format. |
 | AWS S3 			| To store the data in Parquet format 			  | * Highly-scalable, secured and low-latency cloud data storage <br />* Easy connection with Redshift database. <br />* Low storage cost |
 | AWS Redshift & Redshift Spectrum 	|  For storing data, performing transformations and executing analytical queries 													| Scalable and Reliable Database <br /> * Supports Columnar storage for faster processing of analytical queries <br />* Easy for querying
-| Tableau 			| For building dahsboard to visualize the data and obtain insights | * Provides real-time connection to the live Redshift database. <br /> * Provides real-time insights for answering various business queries interactively. |
+| Tableau 			| For building dashboard to visualize the data and obtain insights | * Provides real-time connection to the live Redshift database. <br /> * Provides real-time insights for answering various business queries interactively. |
 | Python libraries:  boto3, google, pandas | To write scripts to execute the jobs in the project | * Various libraries and conncetors available in Python. |
 
 <!-- ![IntendedCapstoneProjectWorkflow](readme_images/IntendedCapstoneProjectWorkflow.png) -->
@@ -53,25 +53,25 @@ The data is queried from Google Big Query using Python script. For the first tim
 The data obtained from the Google Big Query is stored in Amazon S3, in Parquet format which is a columnar format for faster processing of analytical queries. 
 
 ### Step 1.b:
-A Redshift table is created based on the Amazon AWS S3 data from the above step. 
+A Redshift table is created based on the Amazon AWS S3 data from the above step. All the information obtained is stored in the table in the raw format without any transformation. 
 
 ## Step 2:
 We then obtain a list of latitude-longitude pairs for which the geocoding mapping is not already resolved. This way, we only call the Position Stack API for those latitude-longitudes for which we have not already called. 
 
 ### Step 2.a:
-Call the Position Stack API for the list of latitude-longitude pairs from the above step. 
+Call the Position Stack API for the list of latitude-longitude pairs from the above step. We are using the reverse geocoding for the purpose of obtaining infomration like region, address, country, state, country, etc by providing the latitude and longitude. Currently. 
 
 ### Step 2.b: 
-Store the geocoding mapping information obtained from the above step in the Redshift table. 
+Store the geocoding mapping information obtained from the above step in the Redshift table. This includes the latitude-longitude pair used to make the API call, and all the information obtained from the API is stored in the table in the raw format without any transformation. 
 
 ## Step 3:
 Build the Fact table in Redshift using the World Covid data and the Position Stack data.
 
 ## Intermediate Step (Shown in green in the diagram)
-Obtain check report for the above newly created tables
+Obtain check report for the above newly created tables. There are 3 checks performed, check if data exists in the table, and if data in certain columns contain null and/or negative values.
 
 ## Step 4: 
-Obtain insights using the Fact table on Tableau
+Obtain insights using the Fact table on Tableau. The Dashboard contains a Drop down to select if we want to view the confirmed cases or deaths. Based on the selection, the World Map shows the distribution of confirmed cases/ deaths. This World Map can be used for filtering the graph charts below based on country/state. The Country_wise Trends bar chart, shows the country wise trend of confirmed cases/deaths. We can choose the country in this chart, as a country filter for the World map and the State_wise Trends chart. State_wise Trends bar chart shows the state wise trends for confirmed cases/deaths for the states in the country selected in the Country_wise trends chart. If no country is selected, the State_wise Trends chart shows the trends of all the states present in the data. 
 
 # Design Considerations
 
@@ -85,7 +85,7 @@ Only the latitude-longitude pairs, which are not called previously is called aga
 
 ## 2. The pipelines would be run on a daily basis by 7 am every day.
 The script can be run daily for the incremental load on daily basis using a CRON job. 
-Also, the project is modular, so the Python functions can be used as python callables in Airflow tasks. 
+Also, in future, since the Python project is built in modular fashion, the Python functions can be used as python callables in Airflow tasks. 
 
 ## 3. The database needed to be accessed by 100+ people.
 Amazon Redshift is a scalable cloud database that can be scaled to support more traffic by increasing the memory and/or the clusters. Also, Tableau can support many users viewing the dashboard. If required, the Tableau server can be upgraded to support more users and faster performance. 
