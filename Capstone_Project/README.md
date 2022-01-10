@@ -17,7 +17,7 @@ It's publicly available data, sourced from trusted sources like CSSE at Johns Ho
 ### Geocoding and Positioning data from PositionStack API
 PositionStack API is used for obtaining Geocoding related information for a given latitude-longitude pair. It provides all location-based information such as postal code, address, street, state, region, country. The Worldcovid data set contains latitude-longitude information for most of its data, which is used to query the detailed and usable geocoding information from PositionStack API. 
 
-## Tech Stack used
+## Tech Stack
 
 
 | Tech Stack Used   				| Usage in the Project      					  | Decision Rationale |
@@ -87,5 +87,37 @@ Also, in future, since the Python project is built in modular fashion, the Pytho
 
 ### 3. The database needed to be accessed by 100+ people.
 Amazon Redshift is a scalable cloud database that can be scaled to support more traffic by increasing the memory and/or the clusters. Also, Tableau can support many users viewing the dashboard. If required, the Tableau server can be upgraded to support more users and faster performance. 
+
+## Steps to run the project
+
+### Step 1: Pre Requisites
+**Obtain the Position Stack API Key**
+Obtain the API KEY for Position Stack API from the link: https://positionstack.com/product
+(I chose the free plan, and it is sufficient for this project, if needed, one can go with an advanced plan as well)
+
+**Obtain the Google Big Query Credentials**
+Create a Google Service Account and Set up the environment variable as shown in the link: https://cloud.google.com/docs/authentication/getting-started
+
+### Step 2: Create a Redshift cluster
+Create a Redshift cluster, with the permissions to acceess the AWS S3 buckets. 
+
+### Step 3: Setup the Virtual Environment
+run the script ` ` to setup a virtual environment named ` ` and have the required packages installed. 
+
+### Step 4: Building the pipeline
+Run the script, ` ` to create all the required tables, and to go through the entire workflow. 
+In this project, I used the `public` schema for creating the tables. 
+
+### Step 5: Tableau Dahsboard
+Create a Tableau connection to the Redshift cluster. 
+I've created a Data source extract from the Redshift fact table and published it in the link: https://public.tableau.com/app/profile/gayatri.ganapathy/viz/WorldCovid_16405002080110/Dashboard2?publish=yes
+You can download the Tableau dashboard and connect it to the server for visualizing the data. 
+
+
+
+
+
+
+
 
 
