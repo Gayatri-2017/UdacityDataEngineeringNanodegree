@@ -101,6 +101,8 @@ Create a Google Service Account and Set up the environment variable as shown in 
 ### Step 2: Create a Redshift cluster
 Create a Redshift cluster, with the permissions to acceess the AWS S3 buckets. 
 
+chmod +x setup.sh
+
 ### Step 3: Setup the Virtual Environment
 run the script ` ` to setup a virtual environment named ` ` and have the required packages installed. 
 
@@ -108,7 +110,7 @@ run the script ` ` to setup a virtual environment named ` ` and have the require
 Run the script, ` ` to create all the required tables, and to go through the entire workflow. 
 In this project, I used the `public` schema for creating the tables. 
 
-### Step 5: Tableau Dahsboard
+### Step 5: Tableau Dashboard
 Create a Tableau connection to the Redshift cluster. 
 I've created a Data source extract from the Redshift fact table and published it in the link: https://public.tableau.com/app/profile/gayatri.ganapathy/viz/WorldCovid_16405002080110/Dashboard2?publish=yes
 You can download the Tableau dashboard and connect it to the server for visualizing the data. 
