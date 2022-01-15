@@ -98,6 +98,11 @@ Obtain the API KEY for Position Stack API from the link: https://positionstack.c
 **Obtain the Google Big Query Credentials**
 Create a Google Service Account and Set up the environment variable as shown in the link: https://cloud.google.com/docs/authentication/getting-started
 
+Save the path to the Google Credentials as follows:
+```
+export GOOGLE_APPLICATION_CREDENTIALS=/<Path to json>/<file_name>.json
+```
+
 ## Step 1: Create a virtual environment
 
 Navigate to `Capstone_Project` directory
@@ -139,7 +144,7 @@ Copy paste these values for redshift_connection and aws_connection from the cons
 ### Step 4: Building the pipeline
 Run the script below to create all the required tables, and to populate the entire workflow. 
 ```
-python implementation_scripts/implementation.py
+world-covid-analysis-proj-env/bin/python implementation_script/implementation.py
 ```
 
 ### Step 5: Tableau Dashboard

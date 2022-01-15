@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [[ $# -lt 1 ]] ; then
-    echo 'Please run the command as ./setup.sh google-api-path'
-    exit 0
-fi
-
 REDSHIFT_VPC=sg-04ff7027cc7a3c542
 REDSHIFT_CLUSTER=redshift-cluster-1
 REDSHIFT_DATABASE=dev
@@ -14,26 +9,35 @@ REDSHIFT_PASSWORD=Redshift123
 # Redshift123
 
 # Installing other packages
-echo "Installing packages within Virtual Environment"
+echo "*********Installing packages within Virtual Environment*********"
+
+echo "Installing google-cloud-bigquery ......."
 world-covid-analysis-proj-env/bin/pip install google-cloud-bigquery
+
+echo "Installing boto3 ......."
 world-covid-analysis-proj-env/bin/pip install boto3
+
+echo "Installing pandas ......."
 world-covid-analysis-proj-env/bin/pip install pandas
+
+echo "Installing pyarrow ......."
 world-covid-analysis-proj-env/bin/pip install pyarrow
+
+echo "Installing fsspec ......."
 world-covid-analysis-proj-env/bin/pip install fsspec
+
+echo "Installing s3fs ......."
 world-covid-analysis-proj-env/bin/pip install  s3fs
+
+echo "Installing configparser ......."
 world-covid-analysis-proj-env/bin/pip install configparser
 
 # Installing and connecting to Redshift
 git clone https://github.com/aws/amazon-redshift-python-driver.git
 cd amazon-redshift-python-driver/
-world-covid-analysis-proj-env/bin/pip install .
-world-covid-analysis-proj-env/bin/pip install wheel
-world-covid-analysis-proj-env/bin/pip install botocore==1.22.5
-
-
-# export GOOGLE_APPLICATION_CREDENTIALS=$2"/molten-gantry-301621-06b56bfa11e8.json"
-
-export GOOGLE_APPLICATION_CREDENTIALS=$2
+pip install .
+pip install wheel
+pip install botocore==1.22.5
 
 echo "Creating an AWS Redshift Cluster named "$REDSHIFT_CLUSTER""
 aws redshift create-cluster --cluster-identifier $REDSHIFT_CLUSTER --node-type dc2.large --master-username $REDSHIFT_USER --master-user-password $REDSHIFT_PASSWORD --cluster-type single-node --publicly-accessible --region us-west-2 --vpc-security-group-ids $REDSHIFT_VPC >> setup.log

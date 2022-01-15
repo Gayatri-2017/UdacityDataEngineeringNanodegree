@@ -1,12 +1,21 @@
+import configparser
 import sys
-sys.path.append("/Users/apple/Desktop/Udacity/Git_Udacity/UdacityDataEngineeringNanodegree/Capstone_Project")
 
+config = configparser.RawConfigParser()
+config.read('config.cfg')
+pwd_config = dict(config.items('present_working_directory'))
+
+# sys.path.append("/Users/apple/Desktop/Udacity/Git_Udacity/UdacityDataEngineeringNanodegree/Capstone_Project")
+sys.path.append(pwd_config["pwd"])
 
 from plugins.helpers import SqlQueries, RedshiftHelper, PositionStack, GoogleAPI
 
-# # Load data from Google API
-GoogleAPI().implementor(load_type='incremental_load',limit=100)
-#### GoogleAPI().implementor(load_type='full_load')
+## For first time ful load, use the following function call
+# GoogleAPI().implementor(load_type='full_load')
+
+## Load data from Google API
+GoogleAPI().implementor(load_type='incremental_load')
+
 # Drop and Re-Create all tables if not exists and copy data
 RedshiftHelper().drop_tables()
 RedshiftHelper().create_all_tables()

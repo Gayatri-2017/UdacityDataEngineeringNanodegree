@@ -60,14 +60,7 @@ class PositionStack:
 		"""
 		df = self.get_lat_lon_list()
 
-		i = 0
 		for row in df.iterrows():
-			# Having this condition to restrict API calls. 
-			# Remove this before submitting
-			# TODO: Remove this condition
-			i += 1
-			if i == 2:
-				break
 
 			insert_query_parameters = {"source_country_name": row[1]["country_name"],
 									   "source_latitude" 	: float(row[1]["latitude"]),
