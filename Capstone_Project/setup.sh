@@ -34,10 +34,7 @@ world-covid-analysis-proj-env/bin/pip install configparser
 
 # Installing and connecting to Redshift
 git clone https://github.com/aws/amazon-redshift-python-driver.git
-cd amazon-redshift-python-driver/
-pip install .
-pip install wheel
-pip install botocore==1.22.5
+pip install amazon-redshift-python-driver/.
 
 echo "Creating an AWS Redshift Cluster named "$REDSHIFT_CLUSTER""
 aws redshift create-cluster --cluster-identifier $REDSHIFT_CLUSTER --node-type dc2.large --master-username $REDSHIFT_USER --master-user-password $REDSHIFT_PASSWORD --cluster-type single-node --publicly-accessible --region us-west-2 --vpc-security-group-ids $REDSHIFT_VPC >> setup.log
@@ -69,7 +66,8 @@ echo "password="$REDSHIFT_PASSWORD
 echo "[aws_connection]"
 echo "aws_access_key_id="$(aws configure get aws_access_key_id)
 echo "aws_secret_access_key="$(aws configure get aws_secret_access_key)
-
+echo "[present_working_directory]"
+echo "pwd="$(pwd)
 
 
 
