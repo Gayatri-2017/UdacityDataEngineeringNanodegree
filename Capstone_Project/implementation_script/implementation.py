@@ -5,7 +5,6 @@ config = configparser.RawConfigParser()
 config.read('config.cfg')
 pwd_config = dict(config.items('present_working_directory'))
 
-# sys.path.append("/Users/apple/Desktop/Udacity/Git_Udacity/UdacityDataEngineeringNanodegree/Capstone_Project")
 sys.path.append(pwd_config["pwd"])
 
 from plugins.helpers import SqlQueries, RedshiftHelper, PositionStack, GoogleAPI
