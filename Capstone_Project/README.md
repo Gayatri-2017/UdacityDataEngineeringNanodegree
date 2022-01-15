@@ -99,6 +99,9 @@ Obtain the API KEY for Position Stack API from the link: https://positionstack.c
 Create a Google Service Account and Set up the environment variable as shown in the link: https://cloud.google.com/docs/authentication/getting-started
 
 ## Step 1: Create a virtual environment
+
+Navigate to `Capstone_Project` directory
+
 ```
 pip install virtualenv
 virtualenv world-covid-analysis-proj-env
@@ -106,7 +109,6 @@ source world-covid-analysis-proj-env/bin/activate
 ```
 
 ### Step 2: Setup the Virtual Environment and Create a Redshift cluster
-<!-- Create a Redshift cluster, with the permissions to acceess the AWS S3 buckets.  -->
 
 The `setup.sh` shell script contains commands to setup the virtual environment and to create a Redshift cluster. 
 Feel free to update the values in `setup.sh`. 
@@ -135,8 +137,10 @@ mv config_template.cfg config.cfg
 Copy paste these values for redshift_connection and aws_connection from the console `config.cfg`
 
 ### Step 4: Building the pipeline
-Run the script, ` ` to create all the required tables, and to go through the entire workflow. 
-In this project, I used the `public` schema for creating the tables. 
+Run the script below to create all the required tables, and to populate the entire workflow. 
+```
+python implementation_scripts/implementation.py
+```
 
 ### Step 5: Tableau Dashboard
 Create a Tableau connection to the Redshift cluster. 
