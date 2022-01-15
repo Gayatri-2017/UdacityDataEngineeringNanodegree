@@ -124,7 +124,7 @@ chmod +x setup.sh
 ```
 Run the shell script
 ``` 
-./setup.sh <Path to Google API credentials obtained in Step 0>/<enter file_name>.json
+./setup.sh
 ```
 
 This script would setup the virtual environment `world-covid-analysis-proj-env` and have the required packages installed and a Redshift cluster created. 
