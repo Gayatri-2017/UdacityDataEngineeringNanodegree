@@ -15,4 +15,8 @@ Capstone_Project/plugins/helpers/__pycache__/redshift_helper.cpython-39.pyc
 Capstone_Project/plugins/helpers/__pycache__/sql_queries.cpython-39.pyc
 Capstone_Project/sample-data/2022-01-03 (2).csv
 Capstone_Project/sample-data/
-Capstone_Project/implementation_scripts/covid-pipeline.py
+Capstone_Project/implementation_script/covid-pipeline.py
+Capstone_Project/plugins/operators/
+Capstone_Project/__pycache__/
+Capstone_Project/plugins/__pycache__/
+Capstone_Project/plugins/helpers/__pycache__/
