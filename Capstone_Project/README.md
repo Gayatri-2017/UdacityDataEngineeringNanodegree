@@ -90,7 +90,7 @@ Amazon Redshift is a scalable cloud database that can be scaled to support more 
 
 ## Steps to run the project
 
-### Step 1: Pre Requisites
+### Step 0: Pre Requisites
 **Obtain the Position Stack API Key**
 Obtain the API KEY for Position Stack API from the link: https://positionstack.com/product
 (I chose the free plan, and it is sufficient for this project, if needed, one can go with an advanced plan as well)
@@ -98,13 +98,41 @@ Obtain the API KEY for Position Stack API from the link: https://positionstack.c
 **Obtain the Google Big Query Credentials**
 Create a Google Service Account and Set up the environment variable as shown in the link: https://cloud.google.com/docs/authentication/getting-started
 
-### Step 2: Create a Redshift cluster
-Create a Redshift cluster, with the permissions to acceess the AWS S3 buckets. 
+## Step 1: Create a virtual environment
+```
+pip install virtualenv
+virtualenv world-covid-analysis-proj-env
+source world-covid-analysis-proj-env/bin/activate
+```
 
+### Step 2: Setup the Virtual Environment and Create a Redshift cluster
+<!-- Create a Redshift cluster, with the permissions to acceess the AWS S3 buckets.  -->
+
+The `setup.sh` shell script contains commands to setup the virtual environment and to create a Redshift cluster. 
+Feel free to update the values in `setup.sh`. 
+
+Give execute permissions to setup.sh
+```
 chmod +x setup.sh
+```
+Run the shell script
+``` 
+./setup.sh <Path to Google API credentials obtained in Step 0>/<enter file_name>.json
+```
 
-### Step 3: Setup the Virtual Environment
-run the script ` ` to setup a virtual environment named ` ` and have the required packages installed. 
+This script would setup the virtual environment `world-covid-analysis-proj-env` and have the required packages installed and a Redshift cluster created. 
+
+
+### Step 3: Update the Configuration file
+
+Once the `setup.sh` runs sucessfully, it prints the configuration details. 
+
+Rename `config_template.cfg` to `config.cfg`
+```
+mv config_template.cfg config.cfg
+```
+
+Copy paste these values for redshift_connection and aws_connection from the console `config.cfg`
 
 ### Step 4: Building the pipeline
 Run the script, ` ` to create all the required tables, and to go through the entire workflow. 
